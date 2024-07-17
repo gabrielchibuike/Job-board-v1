@@ -12,6 +12,7 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import { saveJob } from "../utils/saveJobFunc";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
+import ToastMsg from "../Reuseables/ToastMsg";
 
 function Jobs() {
   const scrollhieght = useRef<HTMLDivElement>(null);
@@ -27,6 +28,13 @@ function Jobs() {
   const [jobs_info_id, setJobs_info_id] = useState<jobs_info[]>([]);
 
   const direct = useNavigate();
+
+  const [Toast, setToast] = useState(false);
+
+  const [errType, setErrType] = useState({
+    type: "",
+    msg: "",
+  });
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -70,12 +78,31 @@ function Jobs() {
   }, [jobs_info]);
 
   function apply(ele: jobs_info) {
-    direct("/apply-job", { state: ele });
+    const domain = ["https", "http"];
+    const ext = ele.RecieveApplicant.split(":")[0];
+    if (ele.RecieveApplicant.includes("@gmail.com")) {
+      direct("/apply-job", { state: ele });
+    } else if (domain.includes(ext)) {
+      console.log("url");
+      window.location.href = ele.RecieveApplicant;
+    } else {
+      console.log(ext);
+    }
   }
 
   return (
     <>
       <section>
+        {Toast && (
+          <div className="w-full fixed z-20 top-5 max-w-[250px]  left-1/2 -translate-x-1/2">
+            <ToastMsg
+              setToast={setToast}
+              Toast={Toast}
+              toastType={errType.type}
+              toastMsg={errType.msg}
+            />
+          </div>
+        )}
         <div className="block" ref={hideJobList}>
           <Nav activeRoute="/jobs" />
           <SideNav />
@@ -131,7 +158,9 @@ function Jobs() {
                           />
                           <div
                             className="p-[6px] w-auto h-auto bg-zinc-100 rounded-md cursor-pointer"
-                            onClick={() => saveJob(jobs_id)}
+                            onClick={() =>
+                              saveJob(jobs_id, setToast, setErrType)
+                            }
                           >
                             <BsFillBookmarkFill className="text-xl text-zinc-400" />
                           </div>

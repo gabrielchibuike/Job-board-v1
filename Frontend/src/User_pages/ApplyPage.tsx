@@ -1,4 +1,4 @@
-import { BiCloudUpload } from "react-icons/bi";
+import { BiCloudUpload, BiLoaderAlt } from "react-icons/bi";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Footer from "../Components/Footer";
 import Nav from "../Components/Nav";
@@ -16,6 +16,7 @@ import DOMPurify from "dompurify";
 
 function ApplyPage() {
   const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const styleInput = useRef<HTMLInputElement>(null);
   const [isOverView, setIsOverView] = useState(false);
   const [isViewApplication, setIsViewApplication] = useState(false);
@@ -36,6 +37,7 @@ function ApplyPage() {
   const data = useLocation();
   const arr: any[] = [];
   arr.push(data.state);
+  console.log(data.state);
 
   function viewDetails() {
     setIsOverView(true);
@@ -69,6 +71,7 @@ function ApplyPage() {
       lastName: Inputs.lastName,
       email: Inputs.Email,
       city: Inputs.City,
+      status: "pending",
     });
   }
 
@@ -88,8 +91,10 @@ function ApplyPage() {
       },
       body: formData,
     };
+    setIsLoading(true);
     const request = await fetch(`${domain}/api/apply`, option);
     if (request.ok) {
+      setIsLoading(false);
       const result = await request.text();
       if (request.status == 409) {
         setToast(true);
@@ -111,7 +116,7 @@ function ApplyPage() {
   }
 
   useEffect(() => {
-    console.log(Records);
+    // console.log(Records);
 
     submitApplication();
   }, [Records]);
@@ -258,7 +263,15 @@ function ApplyPage() {
 
                         <div className="w-full py-3 flex justify-between gap-5">
                           <Button
-                            btn_text="Submit application"
+                            btn_text={
+                              isLoading ? (
+                                <div className="animate-spin  text-2xl">
+                                  <BiLoaderAlt className="text-blue-700" />
+                                </div>
+                              ) : (
+                                "Submit application"
+                              )
+                            }
                             additionalclass="w-full  max-lg:text-center text-lg  max-lg:py-3 py-3 rounded-lg"
                             handleClick={handleClick}
                           />

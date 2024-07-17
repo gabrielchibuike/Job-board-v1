@@ -92,7 +92,7 @@ function EmailTemplate() {
     const request = await fetch(`${domain}/api/accept-application`, option);
 
     if (request.ok) {
-      const jobFeed = await request.json();
+      const jobFeed = await request.text();
       console.log(jobFeed);
       // setDownloadSrc([jobFeed]);
     } else {
@@ -105,10 +105,10 @@ function EmailTemplate() {
   }
 
   async function declineApplication() {
-    const data = {
-      sender_email: downloadSrc.email,
-      reciver_email: downloadSrc.reciver,
-    };
+   const data = {
+     sender_email: downloadSrc[0].email,
+     reciver_email: downloadSrc[0].reciever,
+   };
     const option = {
       method: "POST",
       headers: {
@@ -118,10 +118,10 @@ function EmailTemplate() {
       body: JSON.stringify(data),
     };
 
-    const request = await fetch(`${domain}/api/accept-application`, option);
+    const request = await fetch(`${domain}/api/decline-application`, option);
 
     if (request.ok) {
-      const jobFeed = await request.json();
+      const jobFeed = await request.text();
       console.log(jobFeed);
       // setDownloadSrc([jobFeed]);
     } else {

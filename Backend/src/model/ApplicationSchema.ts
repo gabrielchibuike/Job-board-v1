@@ -9,6 +9,7 @@ const ApplicationSchema = new mongoose.Schema({
   email: { type: String, required: true },
   reciever: { type: String, required: true },
   resume: { type: String, required: true },
+  status: { type: String, required: true },
 });
 
 const ApplicationModel = mongoose.model("ApplicationSchema", ApplicationSchema);

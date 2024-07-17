@@ -24,9 +24,19 @@ JobFeedRoute.post("/create_job", async (req: Request, res: Response) => {
 
 JobFeedRoute.get("/allJobs", async (req: Request, res: Response) => {
   try {
-    const Feed = await JobFeedTable.find({});
-    if (Feed.length == 0) return res.status(500).send("Server Error!!");
-    return res.status(200).send(Feed);
+    const { page, limit } = req.query;
+    const newPage = parseInt(page as unknown as string);
+
+    const newLimit = parseInt(limit as unknown as string);
+    
+    const skip = (newPage - 1) * newLimit;
+
+    const Feed = await JobFeedTable.find({}).limit(newLimit * 1).skip(skip);
+
+   const count =  await JobFeedTable.countDocuments();
+
+    // if (Feed.length == 0) return res.status(201).send([]);
+    return res.status(200).json({Feed, totalPage : count});
   } catch (err) {
     console.log(err);
   }
@@ -48,19 +58,12 @@ JobFeedRoute.post("/search-jobs", async (req: Request, res: Response) => {
   // const { error } = jobPrefrenceSchema.validate({ Jobs });
   // if (error) return res.status(400).send(error.details[0]!.message);
   try {
-    const result = await searchJobs(
-      Jobs,
-      Location,
-      Job_Type,
-      workPlaceType
-    );
+    const result = await searchJobs(Jobs, Location, Job_Type, workPlaceType);
     res.json(result);
     // console.log(result);
   } catch (error) {
     res.status(500).json({ message: "Error searching Jobs" });
   }
 });
-
-
 
 export default JobFeedRoute;

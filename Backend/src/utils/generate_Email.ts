@@ -10,27 +10,19 @@ const generateEmail = async (res: Response, email: string) => {
     { expiresIn: "15m" }
   );
   try {
-    // const store_reset_link = await User.findOneAndUpdate(
-    //   { _id: "660c4ca45c095a1c50a1e2f3" },
-    //   { otp: ResetPasswordToken },
-    //   { new: true }
-    // );
-    // if (!store_reset_link) console.log("something went wrong");
-    // console.log(store_reset_link);
-
     const link = `http://localhost:5173/reset-password?token=${ResetPasswordToken}`;
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "gabrielnwagu2002@gmail.com",
-        pass: "joaayblzmjukvrmp",
+        user: process.env.USER,
+        pass: process.env.PASS,
       },
     });
 
     const html = `<p>Click the above link to verify your email <a href = ${link}>${link}</a>.</p>`;
     const mailOptions = {
-      from: "gabriel2002@gmail.com",
-      to: "gabrielnwagu2002@gmail.com",
+      from: "konnect@gmail.com",
+      to: `${email}`,
       subject: "verify Email",
       html: html,
     };

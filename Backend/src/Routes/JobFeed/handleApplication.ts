@@ -31,9 +31,9 @@ handleApp.post(
           public_id: filename.split(".")[0],
         });
         console.log(result);
-        const { id, reciever, firstName, lastName, email, city } = JSON.parse(
-          req.body.jsonData
-        );
+
+        const { id, reciever, firstName, lastName, email, city, status } =
+          JSON.parse(req.body.jsonData);
 
         const values = {
           jobId: id,
@@ -43,7 +43,9 @@ handleApp.post(
           email: email,
           city: city,
           resume: result.secure_url,
+          status: status,
         };
+
         const existingProduct = await ApplicationModel.findOne(values);
         if (existingProduct)
           return res.status(408).send("You already applied for this role");
@@ -57,6 +59,39 @@ handleApp.post(
     }
   }
 );
+
+handleApp.get("/applied-jobs/:email", async (req, res) => {
+  const { email } = req.params;
+  try {
+    const query = await ApplicationModel.findOne({ email: email });
+    let newData: any = [];
+    if (query) {
+      const query2 = await JobFeedTable.findOne({ _id: query?.jobId });
+      const values = {
+        JobTitle: query2?.JobTitle,
+        Company: query2?.Company,
+        JobLocation: query2?.JobLocation,
+        JobType: query2?.JobType,
+        Description: query2?.Description,
+        WorkPlaceType: query2?.WorkPlaceType,
+        Currency: query2?.Currency,
+        Maximum: query2?.Maximum,
+        Minimum: query2?.Minimum,
+        Benefits: query2?.Benefits,
+        RecieveApplicant: query2?.RecieveApplicant,
+        Status: query.status,
+        date_added: query2?.date_added,
+      };
+      newData.push(values);
+      console.log(newData);
+      res.status(200).send(newData);
+    } else {
+      console.log("null");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 handleApp.get("/review-application/:id", async (req, res) => {
   const { id } = req.params;
@@ -83,22 +118,24 @@ handleApp.get("/get-application/:id", async (req, res) => {
 });
 
 handleApp.post("/accept-application", async (req, res) => {
-  const { sender_email, reciver_email } = req.body;
   try {
+    const { sender_email, reciver_email } = req.body;
+    
     const query = await ApplicationModel.findOne({
       email: sender_email,
       reciever: reciver_email,
     });
-    if (query) {
+    if (query!.status == "pending") {
       acceptApplicationEmail(res, sender_email, reciver_email);
-      await ApplicationModel.findOneAndDelete({
-        email: sender_email,
-        reciever: reciver_email,
-      });
+      const result = await ApplicationModel.findOneAndUpdate(
+        { email: sender_email, reciever: reciver_email },
+        { status: "accepted" },
+        { new: true }
+      );
+      console.log(query);
+      res.status(200).send("Application accepted");
     }
-    console.log(query);
-
-    // res.status(200).send(query);
+    res.status(200).send("Application has been reviewed");
   } catch (err) {
     console.log(err);
   }
@@ -111,12 +148,16 @@ handleApp.post("/decline-application", async (req, res) => {
       email: sender_email,
       reciever: reciver_email,
     });
-    if (query) {
+    if (query!.status == "pending") {
       declinedApplicationEmail(res, sender_email, reciver_email);
+      const result = await ApplicationModel.findOneAndUpdate(
+        { email: sender_email, reciever: reciver_email },
+        { status: "declined" },
+        { new: true }
+      );
+      res.status(200).send("Application declined");
     }
-    console.log(query);
-
-    res.status(200).send(query);
+    res.status(200).send("Application has been reviewed");
   } catch (err) {
     console.log(err);
   }

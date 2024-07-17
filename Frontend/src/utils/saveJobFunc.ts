@@ -1,9 +1,25 @@
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { domain } from "../api/client";
 import { jobs_info } from "./interface";
+import { useState } from "react";
 
-export async function saveJob(jobs_id: jobs_info) {
-  
+export async function saveJob(
+  jobs_id: jobs_info,
+  setToast: React.Dispatch<React.SetStateAction<boolean>>,
+  setErrType: React.Dispatch<
+    React.SetStateAction<{
+      type: string;
+      msg: string;
+    }>
+  >
+) {
+  // const [Toast, setToast] = useState(false);
+
+  // const [errType, setErrType] = useState({
+  //   type: "",
+  //   msg: "",
+  // });
+
   interface newJwtPayLoad extends JwtPayload {
     id: string;
     email: string;
@@ -23,11 +39,12 @@ export async function saveJob(jobs_id: jobs_info) {
 
   if (request.ok) {
     const jobFeed = await request.text();
-    console.log(jobFeed);
-    // setToast(true);
-    // setErrType({ type: "success", msg: "Added successfully" });
+    setToast(true);
+    setErrType({ type: "success", msg: "Added successfully" });
   } else {
     const result = await request.text();
+    setToast(true);
+    setErrType({ type: "error", msg: "Something went wrong" });
     if (result == "Forbidden") {
       window.location.href = "/login";
     }

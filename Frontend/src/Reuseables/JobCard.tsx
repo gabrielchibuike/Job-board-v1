@@ -1,11 +1,13 @@
+import { BiLoaderAlt } from "react-icons/bi";
 import { MdAddLocation } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { domain } from "../api/client";
 import { Link, useNavigate } from "react-router-dom";
 import { jobs_info } from "../utils/interface";
 import JobCardSkeleton from "../SkeletonLoaders/JobCardSkeleton";
 import DOMPurify from "dompurify";
+import { CgSpinnerTwoAlt } from "react-icons/cg";
 
 function Card({
   handleClick,
@@ -19,12 +21,13 @@ function Card({
   setJobs_info: React.Dispatch<React.SetStateAction<jobs_info[]>>;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const nav = useNavigate();
 
   async function LoadJobFeed() {
-    setIsLoading(true);
-
-    const request = await fetch(`${domain}/api/allJobs`, {
+    if (page == 1) setIsLoading(true);
+    const request = await fetch(`${domain}/api/allJobs?page=${page}&limit=10`, {
       headers: {
         "x-auth-token": localStorage.getItem("AccessToken") as string,
       },
@@ -34,7 +37,15 @@ function Card({
       setTimeout(async () => {
         setIsLoading(false);
         const jobFeed = await request.json();
-        setJobs_info([...jobFeed]);
+
+        setJobs_info((prevJobs) => [...prevJobs, ...jobFeed.Feed]);
+
+        console.log(jobFeed.Feed.length);
+
+        if (jobFeed.Feed.length >= jobFeed.totalPage) {
+          setHasMore(false);
+          console.log("false");
+        }
       }, 2000);
     } else {
       const result = await request.text();
@@ -46,7 +57,33 @@ function Card({
 
   useEffect(() => {
     LoadJobFeed();
-  }, []);
+  }, [page]);
+
+  const handleScroll = useCallback(() => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      if (hasMore) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }
+  }, [hasMore]);
+
+  // function handleScroll() {
+  //   if (
+  //     window.innerHeight + document.documentElement.scrollTop ===
+  //     document.documentElement.offsetHeight
+  //   ) {
+  //     setPage((prevPage) => prevPage + 1);
+  //     setHasMore(true);
+  //   }
+  // }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
 
   return (
     <>
@@ -110,9 +147,19 @@ function Card({
           </div>
         ))
       )}
+      <div className="w-full flex justify-center">
+        {jobs_info.length == 10 ? (
+          <div className="animate-spin  text-2xl">
+            <BiLoaderAlt className="text-blue-700" />
+          </div>
+        ) : jobs_info.length == 0 ? (
+          ""
+        ) : (
+          ""
+        )}
+      </div>
     </>
   );
 }
-
 
 export default Card;

@@ -29,7 +29,7 @@ function Profile({
   const [manageJob, setManageJob] = useState(false);
   const [SettingIsOpen, setSettingJobIsOpen] = useState(false);
   const [helpCenter, setHelpCenter] = useState(false);
-  const direct = useNavigate()
+  const direct = useNavigate();
 
   const list = [
     {
@@ -39,10 +39,6 @@ function Profile({
     {
       icon: <MdCreditScore />,
       Title: "Applied Jobs",
-    },
-    {
-      icon: <BiBriefcase />,
-      Title: "Manage Jobs",
     },
     {
       icon: <AiOutlineSetting />,
@@ -68,7 +64,7 @@ function Profile({
   const token = localStorage.getItem("AccessToken");
   const decoded: newJwtPayLoad = jwtDecode(token!);
 
-  console.log(decoded.desired_jobs);
+  // console.log(decoded.desired_jobs);
 
   function closePop() {
     setIsProfileClicked(false);
@@ -108,12 +104,6 @@ function Profile({
       setManageJob(false);
       setHelpCenter(false);
       setIsApplied(true);
-    } else if (index == 2) {
-      setSavedJobIsOpen(false);
-      setIsApplied(false);
-      setSettingJobIsOpen(false);
-      setHelpCenter(false);
-      setManageJob(true);
     } else if (index == 3) {
       setSavedJobIsOpen(false);
       setIsApplied(false);
@@ -129,7 +119,7 @@ function Profile({
     } else if (index == 5) {
       localStorage.removeItem("AccessToken");
       setTimeout(() => {
-        direct('/login')
+        direct("/login");
       }, 2000);
     }
   }
@@ -171,8 +161,9 @@ function Profile({
               </div>
               <div className="flex gap-3 items-center max-lg:mt-2 ">
                 <div className="w-[80px] h-[80px] max-lg:w-[60px] max-lg:h-[60px]  rounded-full bg-green-800 flex justify-center items-center">
-                  <p className="font-bold text-white text-[60px] max-lg:text-[30px]">
-                    G
+                  <p className="font-bold flex items-center text-white text-[40px] max-lg:text-[30px] capitalize">
+                    {`${decoded.firstName.split("")[0]}`}
+                    {` ${decoded.lastName.split("")[0]}`}
                   </p>
                 </div>
                 <div>
@@ -228,18 +219,7 @@ function Profile({
                     </div>
                     <h2 className="text-lg max-lg:text-xl ">Applied Job</h2>
                   </div>
-                  <AppliedJob />
-                </div>
-              )}
-              {manageJob && (
-                <div className="">
-                  <div className="flex  ">
-                    <div onClick={BackArrow}>
-                      <BiLeftArrowAlt className="text-3xl text-zinc-500 lg:hidden" />
-                    </div>
-                    <h2 className="text-lg max-lg:text-xl ">Manage Job</h2>
-                  </div>
-                  <ManageJob />
+                  <AppliedJob animate={animate} />
                 </div>
               )}
               {SettingIsOpen && (

@@ -10,6 +10,7 @@ export interface InputsTypes {
   state?: string;
   postal_code?: string;
   desired_jobs?: any;
+  status?: string;
 }
 
 export interface InputsTypes2 {
@@ -64,4 +65,5 @@ export interface jobs_info {
   RecieveApplicant: string;
   ApplicantCollection?: string;
   Description?: string;
+  Status?: string;
 }

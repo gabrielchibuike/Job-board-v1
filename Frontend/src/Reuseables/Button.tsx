@@ -6,7 +6,7 @@ function Button({
   handleClick,
   type,
 }: {
-  btn_text: string;
+  btn_text: string | JSX.Element;
   additionalclass?: string;
   handleClick?: any;
   type?: "button" | "submit" | "reset" | undefined;

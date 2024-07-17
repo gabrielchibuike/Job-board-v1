@@ -13,14 +13,19 @@ import Footer from "../Components/Footer";
 import { saveJob } from "../utils/saveJobFunc";
 import SideNav from "../Components/SideNav";
 import DOMPurify from "dompurify";
+import ToastMsg from "./ToastMsg";
 
 function JobId() {
   const { id } = useParams();
+  const [Toast, setToast] = useState(false);
+  const [errType, setErrType] = useState({
+    type: "",
+    msg: "",
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [JobId, setJobId] = useState<jobs_info[]>([]);
   const direct = useNavigate();
-
 
   async function LoadJobFeedId() {
     setIsLoading(true);
@@ -61,6 +66,16 @@ function JobId() {
   }, []);
   return (
     <>
+      {Toast && (
+        <div className="w-full fixed z-20 top-5 max-w-[250px]  left-1/2 -translate-x-1/2">
+          <ToastMsg
+            setToast={setToast}
+            Toast={Toast}
+            toastType={errType.type}
+            toastMsg={errType.msg}
+          />
+        </div>
+      )}
       <div>
         <Nav />
         <SideNav />
@@ -100,7 +115,7 @@ function JobId() {
                     />
                     <div
                       className="p-[6px] w-auto h-auto bg-zinc-100 rounded-md cursor-pointer"
-                      onClick={() => saveJob(jobs_id)}
+                      onClick={() => saveJob(jobs_id, setToast, setErrType)}
                     >
                       <BsFillBookmarkFill className="text-xl text-zinc-400" />
                     </div>
