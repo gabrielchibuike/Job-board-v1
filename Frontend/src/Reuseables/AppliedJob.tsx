@@ -1,5 +1,4 @@
-import { BsTrash3 } from "react-icons/bs";
-import Button from "./Button";
+
 import { useEffect, useState } from "react";
 import { domain } from "../api/client";
 import { useNavigate } from "react-router-dom";
@@ -95,6 +94,9 @@ function AppliedJob({
               <div
                 className="flex gap-3 justify-between bg-zinc-50 p-3 rounded-lg"
                 key={index}
+                ref={(element: HTMLDivElement) => {
+                  animate.current[index] = element;
+                }}
               >
                 {/* <div className="w-10 h-5 bg-zinc-400 rounded-sm p-3"></div> */}
                 <div className="flex flex-col text-sm font-normal">

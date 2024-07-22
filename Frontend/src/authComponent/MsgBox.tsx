@@ -1,4 +1,3 @@
-import Button from "../Reuseables/Button"
 
 function MsgBox() {
   return (

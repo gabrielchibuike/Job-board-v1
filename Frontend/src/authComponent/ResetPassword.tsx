@@ -1,18 +1,20 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import CustomInput from "../authComponent/authReuseable/CustomInput";
 import CustomButton from "../Reuseables/Button";
 import MainContainer from "../Reuseables/MainContainer";
 import { updateSchema } from "../validation/validateUser";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { domain } from "../api/client";
-import { JwtPayload, jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ToastMsg from "../Reuseables/ToastMsg";
 import { FaHandsHelping } from "react-icons/fa";
+import { BiLoaderAlt } from "react-icons/bi";
 
 function ResetPassword() {
   const direct = useNavigate();
   const [searchParams] = useSearchParams();
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [Cpassword, setCPassword] = useState("");
   const [Toast, setToast] = useState(false);
   const [errType, setErrType] = useState({
@@ -48,12 +50,14 @@ function ResetPassword() {
         },
         body: JSON.stringify(data),
       };
+      setIsLoading(true);
       const request = await fetch(
         `${domain}/api/access/reset_password`,
         option
       );
       const result = await request.text();
       if (request.ok) {
+        setIsLoading(false);
         setToast(true);
         setErrType({ type: "success", msg: "success" });
         setTimeout(() => {
@@ -111,7 +115,18 @@ function ResetPassword() {
                   setCPassword(e.target.value);
                 }}
               />
-              <CustomButton btn_text="Proceed" additionalclass="p-3" />
+              <CustomButton
+                btn_text={
+                  isLoading ? (
+                    <div className="animate-spin w-full flex justify-center  text-2xl">
+                      <BiLoaderAlt className="text-white" />
+                    </div>
+                  ) : (
+                    "Reset Password"
+                  )
+                }
+                additionalclass="p-3"
+              />
             </div>
           </form>
         </div>

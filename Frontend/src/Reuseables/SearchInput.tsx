@@ -11,7 +11,7 @@ import { searchPayload, isLoading } from "../ReduxStore/store";
 // interface setType {
 //   setSearchResult?: React.Dispatch<React.SetStateAction<jobs_info[]>>;
 // }
-function SearchInput() {
+function SearchInput({ additional_class }: { additional_class? : string}) {
   const [isFocused, setIsFocused] = useState(false);
   const [Jobs, setJobs] = useState("");
   const [Location, setLocation] = useState("");
@@ -25,6 +25,7 @@ function SearchInput() {
   function handleBlur() {
     setIsFocused(false);
   }
+
   // HANDLE SUMBIT
   async function handleSearch(e: any) {
     e.preventDefault();
@@ -47,7 +48,6 @@ function SearchInput() {
       option
     );
     if (request.ok) {
-      
       direct(`/search-result?job=${Jobs}&location=${Location}`);
 
       setTimeout(async () => {
@@ -55,9 +55,7 @@ function SearchInput() {
 
         const result = await request.json();
 
-        
         dispatch(searchPayload({ searchPayload: [...result] }));
-        // setSearchResult!([...result]);
       }, 2000);
     } else if (request.status == 400) {
       const result = await request.text();
@@ -97,10 +95,12 @@ function SearchInput() {
     <>
       <form onSubmit={handleSearch}>
         <div className="w-full h-auto flex justify-center">
-          <div className=" w-[60%] h-auto flex justify-center mt-6  rounded-lg shadow-zinc-500 shadow max-lg:flex-col  max-lg:w-full max-lg:p-0 max-lg:gap-4 max-lg:shadow-none">
+          <div
+            className={`w-[60%] h-auto flex justify-center mt-6  rounded-lg shadow-zinc-500 shadow max-lg:flex-col  max-lg:w-full max-lg:p-0 max-lg:gap-4 max-lg:shadow-none ${additional_class}`}
+          >
             <div className="w-full relative ">
               <ConstomInput
-                placeholder="Job title, keyword, or company"
+                placeholder="Job title or category"
                 handleFocus={handleFocus}
                 handleBlur={handleBlur}
                 additionalclass="text-zinc-600 max-sm:rounded-lg"

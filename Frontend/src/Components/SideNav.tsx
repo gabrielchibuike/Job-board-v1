@@ -1,7 +1,7 @@
 import { IoIosArrowForward } from "react-icons/io";
 import { FaHandsHelping } from "react-icons/fa";
 import { useContext } from "react";
-import { AiOutlineClose, AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { ContextApi } from "../App";
 import Button from "../Reuseables/Button";

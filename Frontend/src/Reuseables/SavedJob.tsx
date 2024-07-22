@@ -17,7 +17,7 @@ function SavedJob({
   const [saveJobs, setSavedJobs] = useState<jobs_info[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   interface newJwtPayLoad extends JwtPayload {
-    id: string;
+    _id: string;
     email: string;
   }
 
@@ -27,7 +27,7 @@ function SavedJob({
   async function ReadSavedJobs() {
     // try {
     setIsLoading(true);
-    const request = await fetch(`${domain}/api/read-jobs/${decoded.id}`, {
+    const request = await fetch(`${domain}/api/read-jobs/${decoded._id}`, {
       headers: {
         "x-auth-token": localStorage.getItem("AccessToken") as string,
       },
@@ -42,13 +42,13 @@ function SavedJob({
     } else {
       const result = await request.text();
       if (result == "Forbidden") {
-        direct("/");
+        direct("/login");
       }
     }
   }
 
-  async function RemoveSavedJob(id: string, i: number) {
-    const request = await fetch(`${domain}/api/remove-jobs/${decoded.id}`, {
+  async function RemoveSavedJob(i: number) {
+    const request = await fetch(`${domain}/api/remove-jobs/${decoded._id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -66,6 +66,19 @@ function SavedJob({
         direct("/login");
       }
       console.log(result);
+    }
+  }
+
+  function apply(ele: jobs_info) {
+    const domain = ["https", "http"];
+    const ext = ele.RecieveApplicant.split(":")[0];
+    if (ele.RecieveApplicant.includes("@gmail.com")) {
+      direct("/apply-job", { state: ele });
+    } else if (domain.includes(ext)) {
+      console.log("url");
+      window.location.href = ele.RecieveApplicant;
+    } else {
+      console.log(ext);
     }
   }
 
@@ -111,9 +124,9 @@ function SavedJob({
                     <Button
                       btn_text="Apply"
                       additionalclass=""
-                      // handleClick={apply}
+                      handleClick={() => apply(jobs)}
                     />
-                    <div onClick={() => RemoveSavedJob(jobs._id, index)}>
+                    <div onClick={() => RemoveSavedJob(index)}>
                       <BsTrash3 />
                     </div>
                   </div>
@@ -123,7 +136,9 @@ function SavedJob({
           ) : (
             <div className="w-full  h-80 flex flex-col justify-center items-center">
               <MdOutlineSavedSearch className="text-[100px] text-blue-700/80" />
-              <p className="text-lg font-semibold text-zinc-400">No saved item yet</p>
+              <p className="text-lg font-semibold text-zinc-400">
+                No saved item yet
+              </p>
             </div>
           )}
         </div>

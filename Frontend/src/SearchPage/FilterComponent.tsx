@@ -39,6 +39,8 @@ function FilterComponent() {
       dispatch(searchPayload({ searchPayload: [...result] }));
     } else if (request.status == 400) {
       const result = await request.text();
+      console.log(result);
+      
     }
   }
 

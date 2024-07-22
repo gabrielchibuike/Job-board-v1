@@ -1,18 +1,17 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../authComponent/authReuseable/CustomInput";
 import MainContainer from "../Reuseables/MainContainer";
 import CustomButton from "../Reuseables/Button";
-import { btn } from "../utils/btn_info";
 import ToastMsg from "../Reuseables/ToastMsg";
 import { ChangeEvent, useState } from "react";
 import { domain } from "../api/client";
-import { JwtPayload, jwtDecode } from "jwt-decode";
 import { FaHandsHelping } from "react-icons/fa";
+import { BiLoaderAlt } from "react-icons/bi";
 
 function LoginAuth() {
   const nav = useNavigate();
-  const location = useLocation();
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [Toast, setToast] = useState(false);
   const [errType, setErrType] = useState({
@@ -33,9 +32,12 @@ function LoginAuth() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
+    setIsLoading(true);
     const request = await fetch(`${domain}/api/access/login`, option);
     const result = await request.text();
     if (request.ok) {
+      // console.log(result);
+      setIsLoading(false);
       setToast(true);
       setErrType({ type: "success", msg: "success" });
       localStorage.setItem("AccessToken", result);
@@ -43,6 +45,7 @@ function LoginAuth() {
         nav("/jobs");
       }, 2000);
     } else {
+      setIsLoading(false);
       setToast(true);
       setErrType({ type: "error", msg: result });
     }
@@ -105,7 +108,15 @@ function LoginAuth() {
               </Link>
             </div>
             <CustomButton
-              btn_text="LogIn"
+              btn_text={
+                isLoading ? (
+                  <div className="animate-spin w-full flex justify-center  text-2xl">
+                    <BiLoaderAlt className="text-white" />
+                  </div>
+                ) : (
+                  "Login"
+                )
+              }
               additionalclass="p-3"
               handleClick={handleSubmit}
             />

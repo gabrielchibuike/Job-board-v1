@@ -1,4 +1,3 @@
-import React from "react";
 import Button from "../../Reuseables/Button";
 import CustomInput from "./CustomInput";
 import { InputsTypes } from "../../utils/interface";

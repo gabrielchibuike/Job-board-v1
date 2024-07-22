@@ -18,6 +18,7 @@ function SearchResultCard({
   const isLoading = useSelector(
     (state: any) => state.loadingState.value.isLoading
   );
+  
   return (
     <>
       {isLoading ? (

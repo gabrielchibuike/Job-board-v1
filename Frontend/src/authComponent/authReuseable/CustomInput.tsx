@@ -1,13 +1,12 @@
-import { useState } from "react";
 
-interface InputsTypes {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  streetAddress: string;
-  state: string;
-  postalCode: string;
-}
+// interface InputsTypes {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+//   streetAddress: string;
+//   state: string;
+//   postalCode: string;
+// }
 function CustomInput({
   placeholder,
   label,
@@ -29,7 +28,6 @@ function CustomInput({
   InputRef?: React.RefObject<HTMLInputElement>;
   inputErr?: string;
 }) {
-  const [isFocused, setIsFocused] = useState(false);
   // const { inputErr } = useContext(ContextApi);
   return (
     <>

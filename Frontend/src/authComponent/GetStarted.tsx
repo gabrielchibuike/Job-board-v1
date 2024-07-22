@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import AuthStep1 from "./authReuseable/AuthStep1";
 import AuthStep2 from "./authReuseable/AuthStep2";
 import AuthStep3 from "./authReuseable/AuthStep3";
@@ -11,7 +11,6 @@ import { domain } from "../api/client";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import AuthStep5 from "./authReuseable/AuthStep5";
 import { location, userName } from "../validation/validateUser";
-import { ContextApi } from "../App";
 import ToastMsg from "../Reuseables/ToastMsg";
 
 function GetStarted() {
@@ -67,7 +66,7 @@ function GetStarted() {
           return {
             ...previnfo,
             id: decoded.id,
-            email : decoded.email,
+            email: decoded.email,
             firstName: Inputs.firstName,
             lastName: Inputs.lastName,
           };
@@ -106,13 +105,16 @@ function GetStarted() {
   async function routeNext() {
     const option = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        // "x-auth-token": localStorage.getItem("AccessToken") as string,
+      },
       body: JSON.stringify(Records),
     };
     const request = await fetch(`${domain}/api/access/more_user_info`, option);
     const result = await request.text();
     if (request.ok) {
-      localStorage.setItem("AccessToken", JSON.stringify(result));
+      localStorage.setItem("AccessToken", result);
       nav("/jobs");
     } else {
       console.log(result);

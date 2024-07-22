@@ -71,14 +71,14 @@ function ForthFormPage({
     }
 
     if (Skills.length == 10) {
-      const FilteredDesiredJobs = Skills.filter((element, i) => i != index);
+      const FilteredDesiredJobs = Skills.filter((_, i) => i != index);
       setSkills(FilteredDesiredJobs);
       //  setToast(true);
     }
   }
 
   function removeDesiredJob(ele: string) {
-    const FilteredDesiredJobs = Skills.filter((element, i) => element != ele);
+    const FilteredDesiredJobs = Skills.filter((element) => element != ele);
     setSkills(FilteredDesiredJobs);
   }
 

@@ -119,7 +119,7 @@ function FifthFormPage({
   }
 
   function removeBenefits(index: number) {
-    const FilteredDesiredJobs = benefits.filter((element, i) => i != index);
+    const FilteredDesiredJobs = benefits.filter((_, i) => i != index);
     setBenefits(FilteredDesiredJobs);
   }
 

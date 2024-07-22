@@ -4,8 +4,8 @@ function JobCardSkeleton() {
   return (
     <>
       <div className="space-y-3">
-        {animate_details.map(() => (
-          <div className="w-full p-5 bg-zinc-50 animate-pulse  rounded-xl">
+        {animate_details.map((_, i) => (
+          <div className="w-full p-5 bg-zinc-50 animate-pulse  rounded-xl" key={i}>
             <div className="space-y-2 font-medium">
               <h1 className="w-full h-3 bg-zinc-200 rounded-md"></h1>
               <div className="space-y-2 text-sm items-center">

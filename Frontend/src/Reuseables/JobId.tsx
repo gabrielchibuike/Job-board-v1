@@ -1,4 +1,3 @@
-import { CgArrowLeft } from "react-icons/cg";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { domain } from "../api/client";
@@ -9,11 +8,12 @@ import { MdAddLocation } from "react-icons/md";
 import { CiLocationArrow1 } from "react-icons/ci";
 import JobIdSkeleton from "../SkeletonLoaders/JobIdSkeleton";
 import Nav from "../Components/Nav";
-import Footer from "../Components/Footer";
+
 import { saveJob } from "../utils/saveJobFunc";
 import SideNav from "../Components/SideNav";
 import DOMPurify from "dompurify";
 import ToastMsg from "./ToastMsg";
+import Footer from "../Components/Footer";
 
 function JobId() {
   const { id } = useParams();

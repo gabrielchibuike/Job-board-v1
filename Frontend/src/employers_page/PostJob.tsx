@@ -10,8 +10,6 @@ import {
   JobDetails2,
   JobDetails3,
   JobDetails4,
-  location,
-  userName,
 } from "../validation/validateUser";
 import ToastMsg from "../Reuseables/ToastMsg";
 import FirstFormPage from "./FirstFormPage";
@@ -34,8 +32,6 @@ function PostJob() {
   const [benefits, setBenefits] = useState<string[]>([]);
 
   const [Records, setRecords] = useState<InputsTypes>({});
-
-  const [err, setErr] = useState("");
 
   const [Toast, setToast] = useState(false);
 

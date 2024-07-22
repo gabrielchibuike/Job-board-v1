@@ -4,7 +4,6 @@ import JobCard from "../Reuseables/JobCard";
 import SearchInput from "../Reuseables/SearchInput";
 import SideNav from "../Components/SideNav";
 import { jobs_info } from "../utils/interface";
-import Footer from "../Components/Footer";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { MdAddLocation } from "react-icons/md";
 import Button from "../Reuseables/Button";
@@ -13,6 +12,7 @@ import { saveJob } from "../utils/saveJobFunc";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import ToastMsg from "../Reuseables/ToastMsg";
+import Footer from "../Components/Footer";
 
 function Jobs() {
   const scrollhieght = useRef<HTMLDivElement>(null);
@@ -126,8 +126,8 @@ function Jobs() {
             <div className="w-[50%] max-lg:hidden" ref={mobileView}>
               <div className="px-3 py-12 max-lg:px-0" ref={scrollhieght}>
                 <div className=" w-full h-auto rounded-2xl z-50">
-                  {jobs_info_id!.map((jobs_id) => (
-                    <div>
+                  {jobs_info_id!.map((jobs_id, i) => (
+                    <div key={i}>
                       <div className="space-y-2 font-medium border border-zinc-300 shadow shadow-zinc-300 p-3">
                         <div className="font-bold text-xl text-blue-700">
                           {jobs_id.JobTitle}

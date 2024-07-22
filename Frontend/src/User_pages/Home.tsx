@@ -1,11 +1,14 @@
 import MainContainer from "../Reuseables/MainContainer";
 import Nav from "../Components/Nav";
-import PopularSearch from "../Components/PopularSearch";
-import CardSection from "../Components/CardSection";
 import GetStarted from "../Components/GetStarted";
-import Footer from "../Components/Footer";
 import SideNav from "../Components/SideNav";
-import SearchInput from "../Reuseables/SearchInput";
+import HeaderSection from "../Components/HeaderSection";
+import BodyPage from "../Components/BodyPage";
+import CategoryPage from "../Components/CategoryPage";
+import CardSection2 from "../Components/CardSection2";
+import ReviewPage from "../Components/ReviewPage";
+import Footer from "../Components/Footer";
+
 
 function Home() {
   return (
@@ -13,13 +16,19 @@ function Home() {
       <MainContainer>
         <SideNav />
         <Nav activeRoute={"/"} />
-        <div className="px-20 max-lg:px-4">
+        <div className="px-20  max-lg:px-4">
           <div className="">
-            <SearchInput />
+            <HeaderSection />
+            <BodyPage />
+            <CategoryPage />
+            <CardSection2 />
+            {/* <BillBoard /> */}
+            <GetStarted />
+            <ReviewPage />
+            {/* <SearchInput />
             <PopularSearch />
-            <GetStarted />
             <CardSection />
-            <GetStarted />
+            <GetStarted /> */}
           </div>
         </div>
         <Footer />

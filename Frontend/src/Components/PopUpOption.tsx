@@ -1,6 +1,6 @@
 import { BsFlagFill } from "react-icons/bs";
 import { CgShare } from "react-icons/cg";
-import React, { RefObject, useState } from "react";
+import  { RefObject, useState } from "react";
 import { BiBookmark } from "react-icons/bi";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { domain } from "../api/client";
@@ -43,7 +43,7 @@ function PopUpOption({
     console.log(request);
 
     if (request.ok) {
-      const jobFeed = await request.text();
+       await request.text();
       setToast(true);
       setErrType({ type: "success", msg: "Added successfully" });
     } else {

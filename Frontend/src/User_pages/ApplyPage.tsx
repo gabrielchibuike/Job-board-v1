@@ -3,7 +3,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Footer from "../Components/Footer";
 import Nav from "../Components/Nav";
 import { useLocation, useNavigate } from "react-router-dom";
-import { BsFillBookmarkFill } from "react-icons/bs";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { MdAddLocation } from "react-icons/md";
 import Button from "../Reuseables/Button";
@@ -15,12 +14,13 @@ import ToastMsg from "../Reuseables/ToastMsg";
 import DOMPurify from "dompurify";
 
 function ApplyPage() {
-  const [selectedFile, setSelectedFile] = useState<any>(null);
+  const [selectedFile, setSelectedFile] = useState<any>("");
   const [isLoading, setIsLoading] = useState(false);
   const styleInput = useRef<HTMLInputElement>(null);
   const [isOverView, setIsOverView] = useState(false);
   const [isViewApplication, setIsViewApplication] = useState(false);
   const [Records, setRecords] = useState<InputsTypes>({});
+  const [unsupportedFormat, setUnsupportedFormat] = useState(false);
   const [Toast, setToast] = useState(false);
   const direct = useNavigate();
   const [errType, setErrType] = useState({
@@ -37,7 +37,7 @@ function ApplyPage() {
   const data = useLocation();
   const arr: any[] = [];
   arr.push(data.state);
-  console.log(data.state);
+  // console.log(data.state);
 
   function viewDetails() {
     setIsOverView(true);
@@ -63,19 +63,18 @@ function ApplyPage() {
     setInputs({ ...Inputs, [name]: value });
   }
 
-  function handleClick() {
-    setRecords({
-      id: arr[0]._id,
-      reciever: arr[0].RecieveApplicant,
-      firstName: Inputs.firstName,
-      lastName: Inputs.lastName,
-      email: Inputs.Email,
-      city: Inputs.City,
-      status: "pending",
-    });
-  }
+  async function handleClick(Records: InputsTypes) {
+    if (
+      Inputs.firstName == "" ||
+      Inputs.lastName == "" ||
+      Inputs.Email == "" ||
+      Inputs.City == "" ||
+      selectedFile == ""
+    ) {
+      setToast(true);
+      setErrType({ type: "error", msg: "Fields must mot be empty" });
+    }
 
-  async function submitApplication() {
     const data = {
       ...Records,
     };
@@ -93,6 +92,8 @@ function ApplyPage() {
     };
     setIsLoading(true);
     const request = await fetch(`${domain}/api/apply`, option);
+    console.log(request);
+
     if (request.ok) {
       setIsLoading(false);
       const result = await request.text();
@@ -108,6 +109,7 @@ function ApplyPage() {
     } else if (request.status == 403) {
       direct("/login");
     } else {
+      setIsLoading(false);
       const result = await request.text();
       setToast(true);
       setErrType({ type: "error", msg: result as string });
@@ -115,11 +117,71 @@ function ApplyPage() {
     }
   }
 
-  useEffect(() => {
-    // console.log(Records);
+  // async function submitApplication(Records: InputsTypes) {
+  //   const data = {
+  //     ...Records,
+  //   };
 
-    submitApplication();
-  }, [Records]);
+  //   const formData = new FormData();
+  //   formData.append("file", selectedFile);
+  //   formData.append("jsonData", JSON.stringify(data));
+
+  //   const option = {
+  //     method: "POST",
+  //     headers: {
+  //       "x-auth-token": localStorage.getItem("AccessToken") as string,
+  //     },
+  //     body: formData,
+  //   };
+  //   // setIsLoading(true);
+  //   const request = await fetch(`${domain}/api/apply`, option);
+  //   console.log(request);
+
+  //   if (request.ok) {
+  //     // setIsLoading(false);
+  //     const result = await request.text();
+  //     if (request.status == 409) {
+  //       setToast(true);
+  //       setErrType({ type: "error", msg: result as string });
+  //     }
+  //     setToast(true);
+  //     setErrType({ type: "success", msg: result as string });
+  //     setTimeout(() => {
+  //       direct("/jobs");
+  //     }, 5000);
+  //   } else if (request.status == 403) {
+  //     direct("/login");
+  //   } else {
+  //     const result = await request.text();
+  //     setToast(true);
+  //     setErrType({ type: "error", msg: result as string });
+  //     console.log(result);
+  //   }
+  // }
+
+  useEffect(() => {
+    if (selectedFile) {
+      if (selectedFile.name.split(".")[1] !== "pdf") {
+        setUnsupportedFormat(true);
+        setSelectedFile("");
+      } else {
+        setUnsupportedFormat(false);
+      }
+    }
+    setRecords({
+      id: arr[0]._id,
+      reciever: arr[0].RecieveApplicant,
+      firstName: Inputs.firstName,
+      lastName: Inputs.lastName,
+      email: Inputs.Email,
+      city: Inputs.City,
+      status: "pending",
+    });
+  }, [selectedFile]);
+
+  // useEffect(() => {
+  //   submitApplication();
+  // }, [Records]);
 
   return (
     <>
@@ -255,27 +317,31 @@ function ApplyPage() {
                             </p>
                           </div>
                           <div className="w-fit">
-                            <p className="text-xs mt-3 p-1 font-medium rounded-full bg-blue-200">
-                              {selectedFile && selectedFile.name}
-                            </p>
+                            {unsupportedFormat == true ? (
+                              <div className="text-red-700 font-medium text-xs">
+                                Pdf file only
+                              </div>
+                            ) : (
+                              <p className="text-xs mt-3 p-1 font-medium rounded-full bg-blue-200">
+                                {selectedFile && selectedFile.name}
+                              </p>
+                            )}
                           </div>
                         </div>
 
-                        <div className="w-full py-3 flex justify-between gap-5">
-                          <Button
-                            btn_text={
-                              isLoading ? (
-                                <div className="animate-spin  text-2xl">
-                                  <BiLoaderAlt className="text-blue-700" />
-                                </div>
-                              ) : (
-                                "Submit application"
-                              )
-                            }
-                            additionalclass="w-full  max-lg:text-center text-lg  max-lg:py-3 py-3 rounded-lg"
-                            handleClick={handleClick}
-                          />
-                        </div>
+                        <Button
+                          btn_text={
+                            isLoading ? (
+                              <div className="animate-spin w-full flex justify-center  text-2xl">
+                                <BiLoaderAlt className="text-white" />
+                              </div>
+                            ) : (
+                              "Submit application"
+                            )
+                          }
+                          additionalclass="w-full  max-lg:text-center text-lg  max-lg:py-3 py-3 rounded-lg"
+                          handleClick={() => handleClick(Records)}
+                        />
                       </div>
                     </div>
                   )}

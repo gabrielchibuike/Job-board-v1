@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent } from "react";
 import Button from "../Reuseables/Button";
 import CustomInput from "../authComponent/authReuseable/CustomInput";
-import { InputsTypes, InputsTypes2 } from "../utils/interface";
+import {  InputsTypes2 } from "../utils/interface";
 
 function SecondFormPage({
   handleClick,

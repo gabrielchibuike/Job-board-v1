@@ -1,6 +1,5 @@
 import MainContainer from '../Reuseables/MainContainer'
 import Nav from '../Components/Nav'
-import ResumeComponent from '../Reuseables/ResumeComponent'
 import Footer from '../Components/Footer'
 
 function BuildResume() {
@@ -8,7 +7,6 @@ function BuildResume() {
         <>
             <MainContainer>
                 <Nav activeRoute={'/build-resume'} />
-                <ResumeComponent />
                 <Footer />
             </MainContainer>
         </>

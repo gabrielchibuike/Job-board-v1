@@ -1,4 +1,3 @@
-import { MouseEvent, MouseEventHandler } from "react";
 
 function Button({
   btn_text,

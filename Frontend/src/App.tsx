@@ -1,7 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import JobListing from "./Components/JobListing"
 import Home from "./User_pages/Home";
-import BuildResume from "./User_pages/BuildResume";
 import Community from "./User_pages/Community";
 import Jobs from "./User_pages/Jobs";
 import CreateUser from "./authComponent/CreateUser";
@@ -18,6 +17,7 @@ import JobId from "./Reuseables/JobId";
 import SearchResult from "./SearchPage/SearchResult";
 import ApplyPage from "./User_pages/ApplyPage";
 import EmailTemplate from "./utils/EmailTemplate";
+import CategoryResult from "./SearchPage/CategoryResult";
 // import { io } from "socket.io-client";
 // import Button from "./Reuseables/Button";
 
@@ -73,11 +73,15 @@ function App({}) {
                 <Route path="/jobs" element={<Jobs />} />
                 <Route path="/job-id/:id" element={<JobId />} />
                 <Route path="/search-result" element={<SearchResult />} />
+                <Route
+                  path="/category-result"
+                  element={<CategoryResult />}
+                />
                 <Route path="/companies" element={<Community />} />
                 <Route path="/getStarted" element={<GetStarted />} />
                 <Route path="/apply-job" element={<ApplyPage />} />
                 {/* Hire Routes */}
-                <Route path="/employer-hire" element={<PostJob />} />
+                <Route path="/employer" element={<PostJob />} />
                 <Route path="/review-application" element={<EmailTemplate />} />
               </Routes>
             </BrowserRouter>

@@ -10,6 +10,16 @@ const searchSlice = createSlice({
   },
 });
 
+const categorySlice = createSlice({
+  name: "category payload",
+  initialState: { value: { categoryPayload: [] } },
+  reducers: {
+    categoryPayload: (state, action) => {
+      state.value = action.payload;
+    },
+  },
+});
+
 const loadingSlice = createSlice({
   name: "isLoading",
   initialState: { value: { isLoading: false } },
@@ -21,11 +31,13 @@ const loadingSlice = createSlice({
 });
 
 export const { searchPayload } = searchSlice.actions;
+export const { categoryPayload } = categorySlice.actions;
 export const { isLoading } = loadingSlice.actions;
 
 export const store = configureStore({
   reducer: {
     searchResult: searchSlice.reducer,
+    categoryResult: categorySlice.reducer,
     loadingState: loadingSlice.reducer,
   },
 });

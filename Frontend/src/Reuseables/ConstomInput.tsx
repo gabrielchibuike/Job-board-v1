@@ -1,4 +1,3 @@
-import { ChangeEvent } from "react";
 
 interface InputsTypes {
   placeholder: string;

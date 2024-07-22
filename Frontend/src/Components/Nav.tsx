@@ -1,5 +1,4 @@
-import { IoMdClose } from "react-icons/io";
-import { AiOutlineClose } from "react-icons/ai";
+
 import { CgProfile } from "react-icons/cg";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { BiMenu } from "react-icons/bi";
@@ -87,7 +86,7 @@ function Nav({ activeRoute }: { activeRoute?: string }) {
           ) : (
             <div>
               <div className="flex gap-3 text-2xl">
-                <IoIosNotificationsOutline />
+                {/* <IoIosNotificationsOutline /> */}
                 <div onClick={handlePop}>
                   <CgProfile />
                 </div>
@@ -98,7 +97,7 @@ function Nav({ activeRoute }: { activeRoute?: string }) {
             </div>
           )}
 
-          <Link to={"/employer-hire"}>
+          <Link to={"/employer"}>
             <div className="h-[60px] flex items-center  hover:border-blue-700 hover:border-b  max-lg:hidden">
               Post Job/Employers
             </div>

@@ -7,10 +7,12 @@ import ToastMsg from "../Reuseables/ToastMsg";
 import { emailSchema } from "../validation/validateUser";
 import { useNavigate } from "react-router-dom";
 import { FaHandsHelping } from "react-icons/fa";
+import { BiLoaderAlt } from "react-icons/bi";
 
 function VerifyEmail() {
   const nav = useNavigate();
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [Toast, setToast] = useState(false);
   const [errType, setErrType] = useState({
     type: "",
@@ -33,9 +35,11 @@ function VerifyEmail() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       };
+      setIsLoading(true);
       const request = await fetch(`${domain}/api/access/userEmail`, option);
       const result = await request.text();
       if (request.ok) {
+        setIsLoading(false);
         // localStorage.setItem("verifyEmailToken", result);
         setToast(true);
         setErrType({ type: "success", msg: "success" });
@@ -83,7 +87,18 @@ function VerifyEmail() {
                   setEmail(e.target.value);
                 }}
               />
-              <CustomButton additionalclass="p-3" btn_text="Procced" />
+              <CustomButton
+                additionalclass="p-3"
+                btn_text={
+                  isLoading ? (
+                    <div className="animate-spin w-full flex justify-center  text-2xl">
+                      <BiLoaderAlt className="text-white" />
+                    </div>
+                  ) : (
+                    "Procced"
+                  )
+                }
+              />
             </div>
           </form>
         </div>

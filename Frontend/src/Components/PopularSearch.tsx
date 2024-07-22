@@ -1,6 +1,5 @@
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowForward } from "react-icons/io";
-import { useEffect, useRef } from "react";
+
+import { useRef } from "react";
 import { IoMdSearch } from "react-icons/io";
 
 const popularSearch = [

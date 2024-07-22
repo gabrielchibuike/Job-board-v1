@@ -1,5 +1,5 @@
 import { AiOutlineClose } from "react-icons/ai";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../Reuseables/Button";
 import CustomInput from "./CustomInput";
 import ToastMsg from "../../Reuseables/ToastMsg";
@@ -21,10 +21,10 @@ function AuthStep4({
   // const [desiredJob, setDesiredJob] = useState<string[]>([]);
   // const [jobInputs, setJobInputs] = useState<string>("");
   const [Toast, setToast] = useState(false);
-  const [errType, setErrType] = useState({
-    type: "",
-    msg: "",
-  });
+  // const [errType, setErrType] = useState({
+  //   type: "",
+  //   msg: "",
+  // });
 
   // function handleInput(e: ChangeEvent<HTMLInputElement>) {
   //   setJobInputs(e.target.value);
@@ -38,14 +38,14 @@ function AuthStep4({
     });
 
     if (desiredJob.length == 5) {
-      const FilteredDesiredJobs = desiredJob.filter((element, i) => i != index);
+      const FilteredDesiredJobs = desiredJob.filter((_, i) => i != index);
       setDesiredJob(FilteredDesiredJobs);
       setToast(true);
     }
   }
 
   function removeDesiredJob(index: number) {
-    const FilteredDesiredJobs = desiredJob.filter((element, i) => i != index);
+    const FilteredDesiredJobs = desiredJob.filter((_, i) => i != index);
     setDesiredJob(FilteredDesiredJobs);
   }
 

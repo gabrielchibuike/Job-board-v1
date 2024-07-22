@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { MdAddLocation } from "react-icons/md";
-import { useLocation, useSearchParams } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 import { domain } from "../api/client";
 import Button from "../Reuseables/Button";
 import Footer from "../Components/Footer";
