@@ -3,8 +3,6 @@ import AuthStep1 from "./authReuseable/AuthStep1";
 import AuthStep2 from "./authReuseable/AuthStep2";
 import AuthStep3 from "./authReuseable/AuthStep3";
 import AuthStep4 from "./authReuseable/AuthStep4";
-import Nav from "../Components/Nav";
-import Footer from "../Components/Footer";
 import { useNavigate } from "react-router-dom";
 import { InputsTypes } from "../utils/interface";
 import { domain } from "../api/client";
@@ -136,7 +134,6 @@ function GetStarted() {
           />
         </div>
       )}
-      <Nav />
       <div className="w-full flex flex-col items-center max-lg:px-3 ">
         {step == 0 ? (
           <AuthStep1 handleClick={() => handleStep(0)} />
@@ -166,7 +163,7 @@ function GetStarted() {
           ""
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

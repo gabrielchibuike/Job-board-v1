@@ -1,6 +1,6 @@
 import CustomInput from "../authComponent/authReuseable/CustomInput";
 import MainContainer from "../Reuseables/MainContainer";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useRef, useState } from "react";
 import CustomButton from "../Reuseables/Button";
 import { createUserSchema } from "../validation/validateUser";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ function CreateUser() {
   const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   //   const [getStarted, setGetStarted] = useState(false);
   const [Toast, setToast] = useState(false);
@@ -40,15 +41,18 @@ function CreateUser() {
         body: JSON.stringify(data),
       };
       setIsLoading(true);
+      disabledBtn.current!.disabled = true;
       const request = await fetch(`${domain}/api/access/create_user`, option);
       const result = await request.text();
       if (request.ok) {
         setIsLoading(false);
+        disabledBtn.current!.disabled = false;
         setToast(true);
         setErrType({ type: "success", msg: "Account Created" });
         localStorage.setItem("AccessToken", result);
         nav("/getStarted");
       } else {
+        disabledBtn.current!.disabled = false;
         setToast(true);
         setErrType({ type: "error", msg: result });
       }
@@ -122,6 +126,7 @@ function CreateUser() {
               }
               additionalclass="p-3"
               handleClick={handleSubmit}
+              disabled={disabledBtn}
             />
             <div className="flex gap-5 justify-between">
               <p className="text-sm text-zinc-600 font-medium">

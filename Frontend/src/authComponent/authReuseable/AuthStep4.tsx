@@ -18,17 +18,8 @@ function AuthStep4({
   desiredJob: string[];
   setDesiredJob: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  // const [desiredJob, setDesiredJob] = useState<string[]>([]);
-  // const [jobInputs, setJobInputs] = useState<string>("");
   const [Toast, setToast] = useState(false);
-  // const [errType, setErrType] = useState({
-  //   type: "",
-  //   msg: "",
-  // });
-
-  // function handleInput(e: ChangeEvent<HTMLInputElement>) {
-  //   setJobInputs(e.target.value);
-  // }
+ 
 
   function addDesiredJob(index: any) {
     console.log(index);
@@ -84,7 +75,7 @@ function AuthStep4({
                 additionalclass="w-auto font-meduim"
               />
               <div
-                className="w-20 h-10 text-center p-2 mt-6 rounded-md text-white text-sm font-semibold cursor-pointer  bg-blue-700"
+                className="w-20 h-11 flex items-center justify-center p-2 mt-4 rounded-md text-white text-base font-semibold cursor-pointer  bg-blue-700"
                 onClick={(i) => addDesiredJob(i)}
               >
                 Add

@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import CustomInput from "../authComponent/authReuseable/CustomInput";
 import CustomButton from "../Reuseables/Button";
 import MainContainer from "../Reuseables/MainContainer";
@@ -14,6 +14,7 @@ function ResetPassword() {
   const direct = useNavigate();
   const [searchParams] = useSearchParams();
   const [password, setPassword] = useState("");
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [Cpassword, setCPassword] = useState("");
   const [Toast, setToast] = useState(false);
@@ -51,6 +52,7 @@ function ResetPassword() {
         body: JSON.stringify(data),
       };
       setIsLoading(true);
+      disabledBtn.current!.disabled = true;
       const request = await fetch(
         `${domain}/api/access/reset_password`,
         option
@@ -58,12 +60,15 @@ function ResetPassword() {
       const result = await request.text();
       if (request.ok) {
         setIsLoading(false);
+        disabledBtn.current!.disabled = false;
         setToast(true);
         setErrType({ type: "success", msg: "success" });
         setTimeout(() => {
           direct("/jobs");
         }, 5000);
       } else if (request.status === 403 || request.status === 401) {
+        setIsLoading(false);
+        disabledBtn.current!.disabled = false;
         setToast(true);
         setErrType({ type: "error", msg: result });
         setTimeout(() => {
@@ -126,6 +131,7 @@ function ResetPassword() {
                   )
                 }
                 additionalclass="p-3"
+                disabled={disabledBtn}
               />
             </div>
           </form>

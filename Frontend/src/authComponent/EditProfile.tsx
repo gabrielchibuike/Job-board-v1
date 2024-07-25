@@ -1,11 +1,14 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import ToastMsg from "../Reuseables/ToastMsg";
 import CustomInput from "./authReuseable/CustomInput";
 import CustomButton from "../Reuseables/Button";
 import { domain } from "../api/client";
 import { jwtDecode } from "jwt-decode";
+import { BiLoaderAlt } from "react-icons/bi";
 
 function EditProfile() {
+  const [isLoading, setIsLoading] = useState(false);
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
   const [state, setState] = useState("");
@@ -39,11 +42,14 @@ function EditProfile() {
       },
       body: JSON.stringify(data),
     };
-
+    setIsLoading(true);
+    disabledBtn.current!.disabled = true;
     const request = await fetch(`${domain}/api/edit_profile`, option);
     const result = await request.text();
     if (request.ok) {
       localStorage.setItem("AccessToken", result);
+      setIsLoading(false);
+      disabledBtn.current!.disabled = false;
       setToast(true);
       setErrType({ type: "success", msg: "Profile updated successfully" });
       setfirstName("");
@@ -51,74 +57,84 @@ function EditProfile() {
       setState("");
       setpostal_code("");
     } else {
+      setIsLoading(false);
+      disabledBtn.current!.disabled = false;
       setToast(true);
       setErrType({ type: "error", msg: result });
     }
   }
   return (
     <>
-        {Toast && (
-          <div className="w-full fixed z-20 top-5 max-w-[250px]  left-1/2 -translate-x-1/2">
-            <ToastMsg
-              setToast={setToast}
-              Toast={Toast}
-              toastType={errType.type}
-              toastMsg={errType.msg}
-            />
-          </div>
-        )}
-        <div className="w-full pt-3 max-lg:pt-14">
-          <div className="flex justify-center">
-            <p className="text-lg max-lg:text-xl font-semibold text-zinc-500 ">
-              Edit Profile
-            </p>
-          </div>
-          <div className=" w-full rounded-lg flex flex-col justify-center space-y-5 py-3  max-lg:shadow-transparent">
-            <div className="flex gap-4">
-              <CustomInput
-                additionalclass={``}
-                placeholder="FirstName"
-                type="text"
-                value={firstName}
-                handleInput={(e: ChangeEvent<HTMLInputElement>) => {
-                  setfirstName(e.target.value);
-                }}
-              />
-              <CustomInput
-                additionalclass={``}
-                placeholder="LastName"
-                type="text"
-                value={lastName}
-                handleInput={(e: ChangeEvent<HTMLInputElement>) => {
-                  setlastName(e.target.value);
-                }}
-              />
-            </div>
-            <CustomInput
-              additionalclass={``}
-              placeholder="City/State"
-              type="text"
-              value={state}
-              handleInput={(e: ChangeEvent<HTMLInputElement>) => {
-                setState(e.target.value);
-              }}
-            />
-            <CustomInput
-              additionalclass={``}
-              placeholder="Postal Code"
-              type="text"
-              value={postal_code}
-              handleInput={(e: ChangeEvent<HTMLInputElement>) => {
-                setpostal_code(e.target.value);
-              }}
-            />
-            <CustomButton
-              btn_text="Save"
-              additionalclass="p-3"
-              handleClick={handleSubmit}
-            />
-          </div>
+      {Toast && (
+        <div className="w-full fixed z-20 top-5 max-w-[250px]  left-1/2 -translate-x-1/2">
+          <ToastMsg
+            setToast={setToast}
+            Toast={Toast}
+            toastType={errType.type}
+            toastMsg={errType.msg}
+          />
         </div>
+      )}
+      <div className="w-full pt-3 max-lg:pt-14">
+        <div className="flex justify-center">
+          <p className="text-lg max-lg:text-xl font-semibold text-zinc-500 ">
+            Edit Profile
+          </p>
+        </div>
+        <div className=" w-full rounded-lg flex flex-col justify-center space-y-5 py-3  max-lg:shadow-transparent">
+          <div className="flex gap-4">
+            <CustomInput
+              additionalclass={``}
+              placeholder="FirstName"
+              type="text"
+              value={firstName}
+              handleInput={(e: ChangeEvent<HTMLInputElement>) => {
+                setfirstName(e.target.value);
+              }}
+            />
+            <CustomInput
+              additionalclass={``}
+              placeholder="LastName"
+              type="text"
+              value={lastName}
+              handleInput={(e: ChangeEvent<HTMLInputElement>) => {
+                setlastName(e.target.value);
+              }}
+            />
+          </div>
+          <CustomInput
+            additionalclass={``}
+            placeholder="City/State"
+            type="text"
+            value={state}
+            handleInput={(e: ChangeEvent<HTMLInputElement>) => {
+              setState(e.target.value);
+            }}
+          />
+          <CustomInput
+            additionalclass={``}
+            placeholder="Postal Code"
+            type="text"
+            value={postal_code}
+            handleInput={(e: ChangeEvent<HTMLInputElement>) => {
+              setpostal_code(e.target.value);
+            }}
+          />
+          <CustomButton
+            btn_text={
+              isLoading ? (
+                <div className="animate-spin w-full flex justify-center  text-2xl">
+                  <BiLoaderAlt className="text-white" />
+                </div>
+              ) : (
+                "Save"
+              )
+            }
+            additionalclass="p-3"
+            handleClick={handleSubmit}
+          />
+        </div>
+      </div>
     </>
   );
 }

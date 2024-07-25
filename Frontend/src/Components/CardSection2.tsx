@@ -1,15 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../Reuseables/Button";
 
 function CardSection2() {
+  const direct = useNavigate();
   return (
     <>
-      <div className="w-full h-screen max-lg:h-[500px] flex ">
-        <div className="w-[50%]  py-20 flex justify-cente max-lg:hidden">
-          <img src="image.png" alt="" className=" object-contain w-[400px]" />
+      <div className="w-full min-h-screen max-lg:h-[300px] max-xl:min-h-[400px]  flex  items-center">
+        <div className="w-[50%]  py-20 flex items-center max-lg:hidden">
+          <img src="image.png" alt="" className=" object-contain w-[500px]" />
         </div>
         <div className="w-full h-full  flex items-center justify-center max-lg:justify-start max-lg:px-7 space-y-3">
           <div className="flex flex-col ">
-            <h1 className="font-semibold text-3xl text-zinc-800">
+            <h1 className="font-semibold text-3xl max-lg:text-center  max-xl:text-center max-lg:text-2xl text-zinc-800">
               Find your Perfect job <br /> based on{" "}
               <span className="italic text-blue-700">your interest</span>
             </h1>
@@ -26,7 +28,12 @@ function CardSection2() {
               </li>
             </ul>
             <div>
-              <Button btn_text={"Get Started"} />
+              <Button
+                btn_text={"Get Started"}
+                handleClick={() => {
+                  direct("/login");
+                }}
+              />
             </div>
           </div>
         </div>

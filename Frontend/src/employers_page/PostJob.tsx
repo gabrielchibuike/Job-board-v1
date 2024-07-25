@@ -23,6 +23,8 @@ import SideNav from "../Components/SideNav";
 function PostJob() {
   const direct = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [step, setSteps] = useState<number>(0);
 
   const [JobType, setJobType] = useState<string>("");
@@ -203,17 +205,20 @@ function PostJob() {
       },
       body: JSON.stringify(data),
     };
+    setIsLoading(true);
     const request = await fetch(`${domain}/api/create_job`, option);
     console.log(request);
 
     if (request.ok) {
+      setIsLoading(false);
       const result = await request.text();
       console.log(result);
     } else {
+      setIsLoading(false);
       const result = await request.text();
-       if (result == "Forbidden") {
-         direct("/login");
-       }
+      if (result == "Forbidden") {
+        direct("/login");
+      }
     }
   }
 
@@ -275,7 +280,10 @@ function PostJob() {
           setBenefits={setBenefits}
         />
       ) : step == 5 ? (
-        <SixthFormPage handleClick={() => handleStep(5)} />
+        <SixthFormPage
+          handleClick={() => handleStep(5)}
+          isLoading={isLoading}
+        />
       ) : (
         ""
       )}

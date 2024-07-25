@@ -3,21 +3,22 @@ import Button from "../../Reuseables/Button";
 function AuthStep5({ handleClick }: { handleClick: () => void }) {
   return (
     <>
-      <div className="w-[30%] h-screen max-lg:w-full flex flex-col py-10 items-center max-lg:p-2 max-lg:justify-center">
-        <div>
-          <img src="./started.png" alt="" />
-        </div>
-        <div className="space-y-2">
-          <div className="text-center p-2 space-y-1">
-            <div className="font-semibold text-xl">Congratulation</div>
-            <div className="text-sm font-medium py-1 text-zinc-600">
-              Thank you, we've got you covered
-            </div>
+      <div className="w-[40%] min-h-[560px]  max-lg:w-full flex flex-col py-10 max-lg:px-2  max-lg:justify-center">
+        <img src="./started.png" alt="" />
+        <div className="space-y-3">
+          <div className="text-center p-3 space-y-2">
+            <h2 className="text-2xl text-zinc-900 font-bold ">
+              Congratulation
+            </h2>
+            <p className="text-md font-medium text-zinc-600">
+              Thank you, we've got you covered.
+            </p>
           </div>
           <Button
-            btn_text="Browse Jobs"
+            btn_text="Get Started"
             additionalclass="w-full max-lg:w-full max-lg:text-center text-lg  max-lg:py-3 py-3 rounded-lg"
             handleClick={handleClick}
+            type="submit"
           />
         </div>
       </div>

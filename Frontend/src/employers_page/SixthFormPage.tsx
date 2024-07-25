@@ -1,6 +1,13 @@
+import { BiLoaderAlt } from "react-icons/bi";
 import Button from "../Reuseables/Button";
 
-function SixthFormPage({ handleClick }: { handleClick: () => void }) {
+function SixthFormPage({
+  handleClick,
+  isLoading,
+}: {
+  handleClick: () => void;
+  isLoading: boolean;
+}) {
   return (
     <>
       <div className="w-full flex justify-center items-cente">
@@ -16,7 +23,15 @@ function SixthFormPage({ handleClick }: { handleClick: () => void }) {
               </p>
             </div>
             <Button
-              btn_text="Back To Job Feed"
+              btn_text={
+                isLoading ? (
+                  <div className="animate-spin w-full flex justify-center  text-2xl">
+                    <BiLoaderAlt className="text-white" />
+                  </div>
+                ) : (
+                  "Save"
+                )
+              }
               additionalclass="w-full max-lg:w-full max-lg:text-center text-lg  max-lg:py-3 py-3 rounded-lg"
               handleClick={handleClick}
               type="submit"

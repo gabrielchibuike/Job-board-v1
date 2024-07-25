@@ -27,8 +27,8 @@ const app = express();
 //
 
 // connetion to database
-// const mongodbUrl = process.env.DATABASE;
-const mongodbUrl = "mongodb://localhost:27017/JobSearch";
+const mongodbUrl = process.env.DATABASE;
+// const mongodbUrl = "mongodb://localhost:27017/JobSearch";
 mongoose
   .connect(mongodbUrl as string)
   .then(() => {

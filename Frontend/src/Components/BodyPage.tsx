@@ -1,11 +1,11 @@
 function BodyPage() {
   return (
     <>
-      <div className="w-full min-h-screen flex flex-col justify-center  space-y-1 max-lg:py-14">
-        <h1 className="font-semibold text-3xl text-zinc-80 max-lg:text-center">
+      <div className="w-full min-h-screen max-xl:min-h-[500px] flex flex-col justify-center  space-y-1 max-lg:py-14">
+        <h1 className="font-semibold text-3xl max-lg:text-2xl text-zinc-80 max-lg:text-center">
           How It <span className="text-blue-700 italic">Work</span>
         </h1>
-        <p className="text-lg text-zinc-800/80 font-medium max-lg:text-center">
+        <p className="text-lg max-lg:text-base text-zinc-800/80 font-medium max-lg:text-center">
           Explore the following step to find a job easily.
         </p>
 
@@ -17,9 +17,11 @@ function BodyPage() {
                 <div className="w-20 h-20 bg-[#ffffffc3] border-[5px] border-blue-300/40  rounded-full"></div>
               </div>
             </div>
-            <div className="py-2 space-y-1 max-lg:flex max-lg:flex-col max-lg:items-center">
-              <h1 className="text-xl font-semibold">Register Account</h1>
-              <p className="font-medium text-zinc-500">
+            <div className="py-2 space-y-1 ">
+              <h1 className="text-xl font-semibold max-lg:text-center">
+                Register Account
+              </h1>
+              <p className="font-medium text-zinc-500 max-lg:text-center">
                 First, you need to make an account.
               </p>
             </div>
@@ -32,8 +34,10 @@ function BodyPage() {
               </div>
             </div>
             <div className="py-2 space-y-1 max-lg:flex max-lg:flex-col max-lg:items-center">
-              <h1 className="text-xl font-semibold">Find Job</h1>
-              <p className="font-medium text-zinc-500">
+              <h1 className="text-xl font-semibold max-lg:text-center">
+                Find Job
+              </h1>
+              <p className="font-medium text-zinc-500 max-lg:text-center">
                 Second, search for the job you want.
               </p>
             </div>
@@ -46,8 +50,10 @@ function BodyPage() {
               </div>
             </div>
             <div className="py-2 space-y-1 max-lg:flex max-lg:flex-col max-lg:items-center">
-              <h1 className="text-xl font-semibold">Apply Job</h1>
-              <p className="font-medium text-zinc-500">
+              <h1 className="text-xl font-semibold max-lg:text-center">
+                Apply Job
+              </h1>
+              <p className="font-medium text-zinc-500 max-lg:text-center">
                 Third, apply for ypur desired role.
               </p>
             </div>

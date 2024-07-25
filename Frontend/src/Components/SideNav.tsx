@@ -2,7 +2,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { FaHandsHelping } from "react-icons/fa";
 import { useContext } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ContextApi } from "../App";
 import Button from "../Reuseables/Button";
 const routesArray = [
@@ -15,7 +15,7 @@ const routesArray = [
     routes_text: "Companies",
   },
   {
-    routes: "/employer-hire",
+    routes: "/employer",
     routes_text: "Post Job/Employers",
   },
   {
@@ -29,6 +29,7 @@ const routesArray = [
 ];
 function SideNav() {
   const { toggleSideNav } = useContext(ContextApi);
+  const direct = useNavigate();
 
   function closeMenu() {
     setTimeout(() => {
@@ -74,6 +75,12 @@ function SideNav() {
               btn_text="Logout"
               additionalclass="max-lg:w-full max-lg:text-center text-lg  max-lg:py-3 rounded-lg"
               type="submit"
+              handleClick={() => {
+                localStorage.removeItem("AccessToken");
+                setTimeout(() => {
+                  direct("/login");
+                }, 2000);
+              }}
             />
           </div>
         </div>

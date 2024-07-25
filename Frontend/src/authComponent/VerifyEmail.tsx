@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import CustomInput from "../authComponent/authReuseable/CustomInput";
 import CustomButton from "../Reuseables/Button";
 import MainContainer from "../Reuseables/MainContainer";
@@ -11,6 +11,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 
 function VerifyEmail() {
   const nav = useNavigate();
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [Toast, setToast] = useState(false);
@@ -36,10 +37,12 @@ function VerifyEmail() {
         body: JSON.stringify(data),
       };
       setIsLoading(true);
+      disabledBtn.current!.disabled = true;
       const request = await fetch(`${domain}/api/access/userEmail`, option);
       const result = await request.text();
       if (request.ok) {
         setIsLoading(false);
+        disabledBtn.current!.disabled = false;
         // localStorage.setItem("verifyEmailToken", result);
         setToast(true);
         setErrType({ type: "success", msg: "success" });
@@ -47,6 +50,8 @@ function VerifyEmail() {
           nav("/direct-to-email");
         }, 4000);
       } else {
+        setIsLoading(false);
+        disabledBtn.current!.disabled = false;
         setToast(true);
         setErrType({ type: "error", msg: result });
       }
@@ -98,6 +103,7 @@ function VerifyEmail() {
                     "Procced"
                   )
                 }
+                disabled={disabledBtn}
               />
             </div>
           </form>

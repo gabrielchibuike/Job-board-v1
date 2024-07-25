@@ -9,8 +9,8 @@ function Footer() {
   return (
     <>
       <div className="w-full h-auto mt-16  bg-black">
-        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-lg:px-4  px-20 py-5 justify-items-center">
-          <div className="space-y- p-5">
+        <div className="grid grid-cols-4 max-lg:grid-cols-2 max-sm:grid-cols-1 max-lg:px-5 max-sm:justify-items-start  px-20 py-5 lg:justify-items-center ">
+          <div className="p-5 max-lg:p-1 max-lg:py-5">
             <div className="font-bold text-2xl text-blue-700 max-lg:text-xl">
               Konnect
             </div>
@@ -60,7 +60,7 @@ function Footer() {
               <div className="text-zinc-400 text-sm font-medium">Educator</div>
             </div>
           </div>
-          <div className="space-y-1 p-5 max-lg:p-1 max-lg:py-5">
+          <div className="space-y-1 p-5 max-lg:p-1  max-lg:py-5">
             <div className="space-y-2">
               <h1 className="font-bold text-base text-blue-700">Contact Us</h1>
               <div className="text-zinc-400 text-sm font-medium pt-2 flex gap-2 items-center">
@@ -92,8 +92,11 @@ function Footer() {
             </div>
           </div>
         </div>
-        <div className="text-white h-20 px-20 flex justify-center items-center  border-zinc-800 border-t ">
-          <p className="text-sm text-zinc-400 "> <span className="text-lg">@</span> 2022 konnect Right Reserved</p>
+        <div className="text-white h-20 px-20 max-lg:px-4 flex justify-center items-center  border-zinc-800 border-t ">
+          <p className="text-sm text-zinc-400 ">
+            {" "}
+            <span className="text-lg">@</span> 2022 konnect Right Reserved
+          </p>
         </div>
       </div>
     </>

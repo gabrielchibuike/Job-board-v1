@@ -1,9 +1,9 @@
 function ReviewPage() {
   return (
     <>
-      <div className="w-full min-h-screen flex flex-col justify-center">
+      <div className="w-full min-h-screen   max-xl:min-h-[550px] flex flex-col justify-center max-sm:py-7 max-lg:py-10">
         <div className="space-y-2">
-          <h1 className="font-semibold text-3xl text-zinc-800 max-lg:text-center">
+          <h1 className="font-semibold text-3xl max-lg:text-2xl text-zinc-800 max-lg:text-center">
             Trusted by{" "}
             <span className="italic text-blue-700">
               leading brands and startups.

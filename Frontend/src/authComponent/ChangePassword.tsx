@@ -1,7 +1,7 @@
 import ToastMsg from "../Reuseables/ToastMsg";
 import CustomInput from "./authReuseable/CustomInput";
 import CustomButton from "../Reuseables/Button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { domain } from "../api/client";
 import { jwtDecode } from "jwt-decode";
 import { updateSchema } from "../validation/validateUser";
@@ -10,6 +10,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 function ChangePassword() {
   // const direct = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [OldPassword, setOldPassword] = useState("");
   const [Newpassword, setNewPassword] = useState("");
   const [Cpassword, setCPassword] = useState("");
@@ -45,17 +46,21 @@ function ChangePassword() {
       },
       body: JSON.stringify(data),
     };
-    setIsLoading(false);
+    setIsLoading(true);
+    disabledBtn.current!.disabled = true;
     const request = await fetch(`${domain}/api/change_password`, option);
     const result = await request.text();
     if (request.ok) {
-      setIsLoading(true);
+      setIsLoading(false);
+      disabledBtn.current!.disabled = false;
       setToast(true);
       setErrType({ type: "success", msg: "Password Changed Successfully" });
       setOldPassword("");
       setNewPassword("");
       setCPassword("");
     } else {
+      setIsLoading(false);
+      disabledBtn.current!.disabled = false;
       setToast(true);
       setErrType({ type: "error", msg: result });
     }
@@ -118,6 +123,7 @@ function ChangePassword() {
             }
             additionalclass="p-3"
             handleClick={handleSubmit}
+            disabled={disabledBtn}
           />
         </div>
       </div>

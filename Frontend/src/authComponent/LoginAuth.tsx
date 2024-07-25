@@ -3,13 +3,15 @@ import CustomInput from "../authComponent/authReuseable/CustomInput";
 import MainContainer from "../Reuseables/MainContainer";
 import CustomButton from "../Reuseables/Button";
 import ToastMsg from "../Reuseables/ToastMsg";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { domain } from "../api/client";
 import { FaHandsHelping } from "react-icons/fa";
 import { BiLoaderAlt } from "react-icons/bi";
+import { loginSchema } from "../validation/validateUser";
 
 function LoginAuth() {
   const nav = useNavigate();
+  const disabledBtn = useRef<HTMLButtonElement>(null);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
@@ -23,31 +25,42 @@ function LoginAuth() {
   // console.log(data);
 
   async function handleSubmit() {
+    console.log("bsjj");
     const data = {
       email,
       password,
     };
-    const option = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    };
-    setIsLoading(true);
-    const request = await fetch(`${domain}/api/access/login`, option);
-    const result = await request.text();
-    if (request.ok) {
-      // console.log(result);
-      setIsLoading(false);
+
+    const { error } = loginSchema.validate(data);
+    const userError = error?.details[0].message;
+    if (error) {
       setToast(true);
-      setErrType({ type: "success", msg: "success" });
-      localStorage.setItem("AccessToken", result);
-      setTimeout(() => {
-        nav("/jobs");
-      }, 2000);
+      setErrType({ type: "error", msg: userError as string });
     } else {
-      setIsLoading(false);
-      setToast(true);
-      setErrType({ type: "error", msg: result });
+      const option = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      };
+      setIsLoading(true);
+      disabledBtn.current!.disabled = true;
+      const request = await fetch(`${domain}/api/access/login`, option);
+      const result = await request.text();
+      if (request.ok) {
+        setIsLoading(false);
+        disabledBtn.current!.disabled = false;
+        setToast(true);
+        setErrType({ type: "success", msg: "success" });
+        localStorage.setItem("AccessToken", result);
+        setTimeout(() => {
+          nav("/jobs");
+        }, 2000);
+      } else {
+        setIsLoading(false);
+        disabledBtn.current!.disabled = false;
+        setToast(true);
+        setErrType({ type: "error", msg: result });
+      }
     }
   }
   return (
@@ -119,6 +132,7 @@ function LoginAuth() {
               }
               additionalclass="p-3"
               handleClick={handleSubmit}
+              disabled={disabledBtn}
             />
             <div className="flex justify-between gap-5">
               <p className="text-sm text-zinc-600 font-medium">

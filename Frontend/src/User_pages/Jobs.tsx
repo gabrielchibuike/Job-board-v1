@@ -44,6 +44,13 @@ function Jobs() {
     });
   }, []);
 
+  // useEffect(() => {
+  //   const token = localStorage.getItem("AccessToken");
+  //   if (!token) {
+  //     direct("/getStarted");
+  //   }
+  // }, []);
+
   async function LoadJobFeedId(jobs_info: jobs_info) {
     setJobs_info_id([jobs_info]);
   }

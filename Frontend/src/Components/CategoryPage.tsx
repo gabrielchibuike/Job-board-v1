@@ -71,8 +71,8 @@ function CategoryPage() {
     );
 
     if (request.ok) {
-      direct(`/category-result`);
-
+     
+      
       setTimeout(async () => {
         const result = await request.json();
 
@@ -81,11 +81,15 @@ function CategoryPage() {
         dispatch(categoryPayload({ categoryPayload: [...result] }));
 
       }, 2000);
-
+      direct(`/category-result`);
     } else if (request.status == 400) {
       dispatch(isLoading({ isLoading: false }));
       const result = await request.text();
       console.log(result);
+    } else if (request.status == 403) {
+      dispatch(isLoading({ isLoading: false }));
+      // const result = await request.text();
+      direct("/login")
     }
   }
 
@@ -120,7 +124,7 @@ function CategoryPage() {
   // }, []);
   return (
     <>
-      <div className="w-full  min-h-screen bg-blue-100/10 p-14 rounded-3xl max-lg:p-2">
+      <div className="w-full  min-h-screen max-xl:min-h-[400px] bg-blue-100/10 p-14 rounded-3xl max-lg:p-2 max-lg:py-10">
         <div className="space-y-2">
           <h1 className="font-semibold text-3xl text-zinc-80 max-lg:text-center">
             Explore By <span className="text-blue-700 italic">Category</span>
